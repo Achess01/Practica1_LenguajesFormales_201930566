@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.achess;
+package com.achess.backend;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +12,10 @@ import java.util.List;
  *
  * @author achess
  */
-public enum Alfabeto {      
+public enum Alphabet {      
    LETRA('L'), DIGITO('D'), PUNTUACION('P'), OPERADOR('O'), AGRUPACION('A'), SEPARADOR('S'), NULO('N'), PUNTO('.');
    private char id;
-   private Alfabeto(char id){
+   private Alphabet(char id){
        this.id = id;
    }
     
@@ -23,7 +23,7 @@ public enum Alfabeto {
        return this.id;
    }
    
-   public static char obtenerAlfabeto(char chr){
+   public static char getAlpabhet(char chr){
        //Agregar punto, se repite en puntuación y decimal
         int value = (int)chr;
         if(value == 32 || value == 10){

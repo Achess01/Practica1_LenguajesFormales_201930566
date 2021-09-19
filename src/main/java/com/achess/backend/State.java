@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.achess;
+package com.achess.backend;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,32 +12,32 @@ import java.util.HashMap;
  *
  * @author achess
  */
-public class Estado {
-    private boolean aceptacion;    
+public class State {
+    private boolean finalState;    
     private TokenType tokenType;    
-    HashMap<Character,Estado> siguientes = new HashMap<Character, Estado>();
-    ArrayList<Alfabeto> alfabetoSiguiente = new ArrayList();
-    public Estado() {
-        this.aceptacion = false;        
+    HashMap<Character,State> nextStates = new HashMap<Character, State>();
+    ArrayList<Alphabet> nextAlphabet = new ArrayList();
+    public State() {
+        this.finalState = false;        
         this.tokenType = TokenType.ERROR;
     }
     
-    public Estado(TokenType tokenType){        
-        this.aceptacion = true;
+    public State(TokenType tokenType){        
+        this.finalState = true;
         this.tokenType = tokenType;
     }
     
-    public void addNext(Alfabeto alfabeto, Estado estado){
-        siguientes.put(alfabeto.getId(), estado);
-        alfabetoSiguiente.add(alfabeto);
+    public void addNext(Alphabet alfabeto, State estado){
+        nextStates.put(alfabeto.getId(), estado);
+        nextAlphabet.add(alfabeto);
     }
     
-    public Estado getNext(char alfabeto){
-        return siguientes.get(alfabeto);        
+    public State getNext(char alfabeto){
+        return nextStates.get(alfabeto);        
     }
     
-    public boolean isAceptacion(){
-        return this.aceptacion;
+    public boolean isFinalState(){
+        return this.finalState;
     }
 
     public TokenType getTokenType() {
@@ -47,7 +47,7 @@ public class Estado {
     
     public String nextValues(){
         String sig = "";
-        for(Alfabeto alfabeto : alfabetoSiguiente){
+        for(Alphabet alfabeto : nextAlphabet){
             sig += alfabeto.toString() + " o ";
         }
         int last = sig.lastIndexOf("o");

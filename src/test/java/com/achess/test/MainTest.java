@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.achess;
+package com.achess.test;
 
 /**
  *
  * @author achess
  */
-public class Main {
-    public static void main(String[] args) {                
-        System.out.println("Listo");
+public class MainTest {
+    public static void main(String[] args) {
+        TestFrame test = new TestFrame();
     }
     
 }

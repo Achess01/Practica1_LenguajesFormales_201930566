@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.achess;
+package com.achess.backend;
 
 /**
  *
@@ -12,19 +12,19 @@ package com.achess;
 public class Token {
     private TokenType type;
     private String text;
-    private int fila;
-    private int columna;
+    private int row;
+    private int column;
 
-    public Token(TokenType type, String text, int fila, int columna) {
+    public Token(TokenType type, String text, int row, int column) {
         this.type = type;
         this.text = text;
-        this.fila = fila;
-        this.columna = columna;
+        this.row = row;
+        this.column = column;
     }
 
     @Override
     public String toString() {
-        return "Token{" + "type=" + type + ", text=" + text + ", fila=" + fila + ", columna=" + columna + '}';
+        return "Token{" + "type=" + type + ", text=" + text + ", fila=" + row + ", columna=" + column + '}';
     }
     
 
