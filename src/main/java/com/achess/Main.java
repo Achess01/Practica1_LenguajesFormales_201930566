@@ -13,5 +13,5 @@ public class Main {
     public static void main(String[] args) {                
         System.out.println("Listo");
     }
-    
+    //Agregar funcion para moverse al estado 0 y agregar estados de finalización
 }

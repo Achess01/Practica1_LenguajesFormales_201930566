@@ -11,23 +11,25 @@ package com.achess.backend;
  */
 public class Token {
     private TokenType type;
-    private String text;
+    private String lexeme;
     private int row;
     private int column;
+    private String description;
 
     public Token(TokenType type, String text, int row, int column) {
         this.type = type;
-        this.text = text;
+        this.lexeme = text;
         this.row = row;
         this.column = column;
+        this.description = type.getType();
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
     public String toString() {
-        return "Token{" + "type=" + type + ", text=" + text + ", fila=" + row + ", columna=" + column + '}';
-    }
-    
-
-  
-            
+        return "Token{" + "type=" + type + ", text=" + lexeme + ", row=" + row + ", column=" + column + ", description=" + description + '}';
+    }          
 }

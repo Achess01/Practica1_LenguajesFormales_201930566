@@ -60,7 +60,15 @@ public class Automaton {
             automata = new Automaton();
         }
         return automata;
-    }        
+    }       
+    
+    private void addToken(){
+        
+    }
+    
+    private void addError(TokenType tokenType, String lexeme, int row, int column){
+        
+    }
     
     public void analize(String text){
         tokens.clear();
@@ -76,7 +84,7 @@ public class Automaton {
             char value = text.charAt(index);
             char chr = Alphabet.getAlpabhet(value);            
             if(chr == Alphabet.SEPARADOR.getId()){                                    
-                if(aux1.isFinalState()){
+                if(aux1.isAcceptState()){
                     tokens.add(new Token(aux1.getTokenType(), lexeme, row, column));
                 }
                 else{
@@ -107,7 +115,7 @@ public class Automaton {
                     lexeme = "";
                 }
                 else if (index == text.length() - 1){
-                    if(aux2.isFinalState()){
+                    if(aux2.isAcceptState()){
                         tokens.add(new Token(aux1.getTokenType(), lexeme, row, column));
                     }
                     else{

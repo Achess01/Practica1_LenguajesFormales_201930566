@@ -13,17 +13,18 @@ import java.util.HashMap;
  * @author achess
  */
 public class State {
-    private boolean finalState;    
+    private boolean acceptState;    
+    private boolean finalState;
     private TokenType tokenType;    
     HashMap<Character,State> nextStates = new HashMap<Character, State>();
     ArrayList<Alphabet> nextAlphabet = new ArrayList();
     public State() {
-        this.finalState = false;        
+        this.acceptState = false;        
         this.tokenType = TokenType.ERROR;
     }
     
     public State(TokenType tokenType){        
-        this.finalState = true;
+        this.acceptState = true;
         this.tokenType = tokenType;
     }
     
@@ -36,8 +37,8 @@ public class State {
         return nextStates.get(alfabeto);        
     }
     
-    public boolean isFinalState(){
-        return this.finalState;
+    public boolean isAcceptState(){
+        return this.acceptState;
     }
 
     public TokenType getTokenType() {
