@@ -16,15 +16,19 @@ public class Token {
     private int column;
     private String description;
 
-    public Token(TokenType type, String text, int row, int column) {
+    public Token(TokenType type, String lexeme, int row, int column) {
         this.type = type;
-        this.lexeme = text;
+        this.lexeme = lexeme;
         this.row = row;
         this.column = column;
         this.description = type.getType();
     }
-
-    public void setDescription(String description) {
+    
+    public Token(TokenType type, String text, int row, int column, String description) {
+        this.type = type;
+        this.lexeme = text;
+        this.row = row;
+        this.column = column;
         this.description = description;
     }
 

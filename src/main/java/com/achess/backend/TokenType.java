@@ -11,7 +11,7 @@ package com.achess.backend;
  */
 public enum TokenType {
     IDENTIFICADOR("Identificador"), NUMERO("Número"), DECIMAL("Decimal"), OPERADOR("Operadores aritméticos"),
-    PUNTUACIÓN("Signos de puntuación"), AGRUPACION("Signos de agrupación"), ERROR("Error");
+    PUNTUACIÓN("Signos de puntuación"), AGRUPACION("Signos de agrupación"), ERROR("Error"), PALABRA("Palabra encontrada");
     
     private String type;    
     private TokenType(String type){

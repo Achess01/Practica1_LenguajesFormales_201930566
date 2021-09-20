@@ -14,7 +14,7 @@ import java.util.HashMap;
  */
 public class State {
     private boolean acceptState;    
-    private boolean finalState;
+    private boolean finalState = false;
     private TokenType tokenType;    
     HashMap<Character,State> nextStates = new HashMap<Character, State>();
     ArrayList<Alphabet> nextAlphabet = new ArrayList();
@@ -33,6 +33,10 @@ public class State {
         nextAlphabet.add(alfabeto);
     }
     
+    public void addNext(char chr, State state){
+        nextStates.put(chr, state);        
+    }
+    
     public State getNext(char alfabeto){
         return nextStates.get(alfabeto);        
     }
@@ -44,10 +48,19 @@ public class State {
     public TokenType getTokenType() {
         return tokenType;
     }
+
+    public boolean isFinalState() {
+        return finalState;
+    }
+
+    public void setFinalState(boolean finalState) {
+        this.finalState = finalState;
+    }
+    
         
     
     public String nextValues(){
-        String sig = "";
+        String sig = "Se esperaba ";
         for(Alphabet alfabeto : nextAlphabet){
             sig += alfabeto.toString() + " o ";
         }

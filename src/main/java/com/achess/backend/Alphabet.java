@@ -26,7 +26,7 @@ public enum Alphabet {
    public static char getAlpabhet(char chr){
        //Agregar punto, se repite en puntuación y decimal
         int value = (int)chr;
-        if(value == 32 || value == 10){
+        if(value == 32 || value == 10 || value == 9){
             return SEPARADOR.getId();
         }
         else if(value >= 65 && value <= 90 || value >= 97 && value <= 122){

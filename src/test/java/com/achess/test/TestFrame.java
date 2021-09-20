@@ -7,6 +7,7 @@ package com.achess.test;
 
 import com.achess.backend.Automaton;
 import com.achess.backend.Token;
+import com.achess.backend.WordAutomaton;
 
 /**
  *
@@ -33,6 +34,8 @@ public class TestFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         textSpace = new javax.swing.JTextArea();
         buttonAnalize = new javax.swing.JButton();
+        textFWord = new javax.swing.JTextField();
+        buttonSearch = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -47,16 +50,30 @@ public class TestFrame extends javax.swing.JFrame {
             }
         });
 
+        buttonSearch.setText("Buscar");
+        buttonSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSearchActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
-                .addGap(33, 33, 33)
-                .addComponent(buttonAnalize)
-                .addGap(41, 41, 41))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(textFWord, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                        .addGap(33, 33, 33)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(buttonAnalize)
+                            .addComponent(buttonSearch))))
+                .addGap(38, 38, 38))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -67,7 +84,11 @@ public class TestFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(100, 100, 100)
                 .addComponent(buttonAnalize)
-                .addContainerGap(222, Short.MAX_VALUE))
+                .addGap(50, 50, 50)
+                .addComponent(textFWord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonSearch)
+                .addContainerGap(120, Short.MAX_VALUE))
         );
 
         pack();
@@ -79,15 +100,27 @@ public class TestFrame extends javax.swing.JFrame {
         Automaton.getAutomaton().analize(text);
         String response = "";
         for(Token tk : Automaton.getAutomaton().getTokens()){
-            response += tk.toString() + "\n";
+            System.out.println(tk);
         }
-
+        System.out.println("Errores-------------------------------");
         for(Token tk : Automaton.getAutomaton().getErrors()){
-            response += tk.toString() + "\n";
+            System.out.println(tk);
         }        
         
         System.out.println(response);
     }//GEN-LAST:event_buttonAnalizeActionPerformed
+
+    private void buttonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSearchActionPerformed
+        // TODO add your handling code here:
+        String text = textSpace.getText();
+        String word = textFWord.getText();
+        WordAutomaton autW = new WordAutomaton(word);
+        autW.analize(text);
+        for(Token tk : autW.getWords()){
+            System.out.println(tk);
+        }        
+        
+    }//GEN-LAST:event_buttonSearchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -126,7 +159,9 @@ public class TestFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAnalize;
+    private javax.swing.JButton buttonSearch;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField textFWord;
     private javax.swing.JTextArea textSpace;
     // End of variables declaration//GEN-END:variables
 }
