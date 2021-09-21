@@ -8,6 +8,13 @@ package com.achess.test;
 import com.achess.backend.Automaton;
 import com.achess.backend.Token;
 import com.achess.backend.WordAutomaton;
+import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JTextArea;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
 
 /**
  *
@@ -36,11 +43,22 @@ public class TestFrame extends javax.swing.JFrame {
         buttonAnalize = new javax.swing.JButton();
         textFWord = new javax.swing.JTextField();
         buttonSearch = new javax.swing.JButton();
+        labelCords = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         textSpace.setColumns(20);
         textSpace.setRows(5);
+        textSpace.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                textSpaceCaretUpdate(evt);
+            }
+        });
+        textSpace.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                textSpaceFocusGained(evt);
+            }
+        });
         jScrollPane1.setViewportView(textSpace);
 
         buttonAnalize.setText("Analizar");
@@ -57,6 +75,8 @@ public class TestFrame extends javax.swing.JFrame {
             }
         });
 
+        labelCords.setText("Ln: 1 Col: 1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -72,7 +92,8 @@ public class TestFrame extends javax.swing.JFrame {
                         .addGap(33, 33, 33)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(buttonAnalize)
-                            .addComponent(buttonSearch))))
+                            .addComponent(buttonSearch)
+                            .addComponent(labelCords))))
                 .addGap(38, 38, 38))
         );
         layout.setVerticalGroup(
@@ -82,7 +103,9 @@ public class TestFrame extends javax.swing.JFrame {
                 .addComponent(jScrollPane1)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(100, 100, 100)
+                .addGap(26, 26, 26)
+                .addComponent(labelCords)
+                .addGap(57, 57, 57)
                 .addComponent(buttonAnalize)
                 .addGap(50, 50, 50)
                 .addComponent(textFWord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -99,28 +122,59 @@ public class TestFrame extends javax.swing.JFrame {
         String text = textSpace.getText();
         Automaton.getAutomaton().analize(text);
         String response = "";
-        for(Token tk : Automaton.getAutomaton().getTokens()){
+        for(Token tk : Automaton.getAutomaton().getTokens()){            
             System.out.println(tk);
         }
         System.out.println("Errores-------------------------------");
         for(Token tk : Automaton.getAutomaton().getErrors()){
-            System.out.println(tk);
+            System.out.println(tk);            
         }        
         
         System.out.println(response);
     }//GEN-LAST:event_buttonAnalizeActionPerformed
 
     private void buttonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSearchActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:        
+        textSpace.getHighlighter().removeAllHighlights();
+        Highlighter hilit;
+        Highlighter.HighlightPainter painter;
+        hilit = new DefaultHighlighter();        
+        painter = new DefaultHighlighter.DefaultHighlightPainter(Color.CYAN);
+        textSpace.setHighlighter(hilit);
         String text = textSpace.getText();
         String word = textFWord.getText();
         WordAutomaton autW = new WordAutomaton(word);
         autW.analize(text);
+        System.out.println("---------------------");
         for(Token tk : autW.getWords()){
-            System.out.println(tk);
-        }        
-        
+            try {            
+                hilit.addHighlight(tk.getBegin(),tk.getEnd() ,painter);
+                textSpace.setCaretPosition(tk.getEnd());
+            } catch (BadLocationException ex) {
+                ex.printStackTrace(System.out);
+            }
+        }               
     }//GEN-LAST:event_buttonSearchActionPerformed
+
+    private void textSpaceFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textSpaceFocusGained
+        // TODO add your handling code here:
+        textSpace.getHighlighter().removeAllHighlights();
+    }//GEN-LAST:event_textSpaceFocusGained
+
+    private void textSpaceCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_textSpaceCaretUpdate
+        // TODO add your handling code here:
+        try{
+            JTextArea txt = this.textSpace;
+            int caretOffset = txt.getCaretPosition();
+            int lineNumber = txt.getLineOfOffset(caretOffset);                    
+            int col = caretOffset - txt.getLineStartOffset(lineNumber) + 1;
+            lineNumber+=1;            
+            labelCords.setText("Ln:" + lineNumber +" Col: " + col);            
+        }
+        catch(Exception ex){
+            ex.printStackTrace(System.out);
+        }
+    }//GEN-LAST:event_textSpaceCaretUpdate
 
     /**
      * @param args the command line arguments
@@ -161,6 +215,7 @@ public class TestFrame extends javax.swing.JFrame {
     private javax.swing.JButton buttonAnalize;
     private javax.swing.JButton buttonSearch;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelCords;
     private javax.swing.JTextField textFWord;
     private javax.swing.JTextArea textSpace;
     // End of variables declaration//GEN-END:variables
