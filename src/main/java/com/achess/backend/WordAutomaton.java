@@ -14,22 +14,24 @@ import java.util.ArrayList;
 public class WordAutomaton implements Automatons{
     private ArrayList<Token> words;
     private static WordAutomaton wordAutomaton;
-    private State s0;
+    private State s0;    
     
-    public WordAutomaton(String text){
+    public WordAutomaton(String word){        
         words = new ArrayList<Token>();
-        int len = text.length();
+        int len = word.length();
         State aux;
         State sf = new State(TokenType.PALABRA);
         aux = sf;        
-        for(int x = text.length() - 1; x >= 0; x--){
+        for(int x = len - 1; x >= 0; x--){
             State newState = new State();
-            newState.addNext(text.charAt(x), aux);
+            newState.addNext(word.charAt(x), aux);
             aux = newState;
         }
         s0 = aux;        
     }
-            
+    /**     
+     * @param text Es el texto a analizar
+     */
     public void analize(String text){
         words.clear();
         String lexeme = "";
@@ -41,26 +43,26 @@ public class WordAutomaton implements Automatons{
             char chr = text.charAt(index);
             aux = aux.getNext(chr);
             lexeme += chr;
+            index++;            
             if(aux == null){
                 aux = s0;
                 lexeme = "";
             }
             else if(aux.isAcceptState()){
-                addToken(lexeme, row, column);
+                addToken(lexeme, row, column, index);
                 aux = s0;
                 lexeme = "";
             }                  
             if(chr == '\n'){
                 row++;
                 column = 0;
-            }
+            }            
             column++;
-            index++;
         }
     }
     
-    public void addToken(String lexeme, int row, int column){        
-        words.add(new Token(TokenType.PALABRA, lexeme, row, column));
+    public void addToken(String lexeme, int row, int column, int index){        
+        words.add(new Token(TokenType.PALABRA, lexeme, row, column, index));
     }
 
     public ArrayList<Token> getWords(){

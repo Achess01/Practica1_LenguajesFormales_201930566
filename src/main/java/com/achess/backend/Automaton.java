@@ -66,12 +66,12 @@ public class Automaton implements Automatons{
         return automaton;
     }       
     
-    private void addToken(TokenType tokenType, String lexeme, int row, int column){        
-        tokens.add(new Token(tokenType, lexeme, row, column));
+    private void addToken(TokenType tokenType, String lexeme, int row, int column, int index){        
+        tokens.add(new Token(tokenType, lexeme, row, column, index));
     }    
     
-    private void addToken(String lexeme, int row, int column, String description){
-        errors.add(new Token(TokenType.ERROR, lexeme, row, column, description));
+    private void addToken(String lexeme, int row, int column, String description, int index){
+        errors.add(new Token(TokenType.ERROR, lexeme, row, column, description, index));
     }
     
     public void analize(String text){
@@ -86,14 +86,14 @@ public class Automaton implements Automatons{
         aux1 = s0;
         while(index < text.length()){      
             char value = text.charAt(index);
-            char chr = Alphabet.getAlpabhet(value);                    
+            char chr = Alphabet.getAlpabhet(value);                
             if(chr == Alphabet.SEPARADOR.getId()){                                    
                 if(aux1.isAcceptState()){
-                    this.addToken(aux1.getTokenType(), lexeme, row, column);
+                    this.addToken(aux1.getTokenType(), lexeme, row, column,index);
                 }
                 else if(aux1 != s0){
                     String des = aux1.nextValues();                    
-                    this.addToken(lexeme, row, column, des);
+                    this.addToken(lexeme, row, column, des,index);
                 }
                 aux1 = s0;
                 lexeme = "";
@@ -107,17 +107,17 @@ public class Automaton implements Automatons{
                 lexeme += value;
                 if(aux2 == null){
                     String des = aux1.nextValues();                                                                 
-                    this.addToken(lexeme, row, column, des);
+                    this.addToken(lexeme, row, column+1, des,index+1);
                     aux1 = s0;
                     lexeme = "";
                 }
                 else if (index == text.length() - 1 || aux2.isFinalState()){
                     if(aux2.isAcceptState()){
-                        this.addToken(aux2.getTokenType(), lexeme, row, column);
+                        this.addToken(aux2.getTokenType(), lexeme, row, column+1,index+1);
                     }
                     else{
                         String des = aux2.nextValues();                        
-                        this.addToken(lexeme, row, column, des);
+                        this.addToken(lexeme, row, column+1, des,index+1);
                     }
                     aux1 = s0;
                     lexeme = "";
@@ -126,7 +126,7 @@ public class Automaton implements Automatons{
                     aux1 = aux2;
                 }
             }
-            column++;
+            column++;      
             index++;
         }
     }
