@@ -12,22 +12,31 @@ import java.util.HashMap;
  *
  * @author achess
  */
-public class State {
+public class State{
     private boolean acceptState;    
     private boolean finalState = false;
     private TokenType tokenType;    
     HashMap<Character,State> nextStates = new HashMap<Character, State>();
     ArrayList<Alphabet> nextAlphabet = new ArrayList();
-    public State() {
+    private String actualMovement;
+    private int name;
+    
+    public State(int name) {
+        this.name = name;
         this.acceptState = false;        
         this.tokenType = TokenType.ERROR;
     }
     
-    public State(TokenType tokenType){        
+    public State(TokenType tokenType, int name){        
+        this.name = name;
         this.acceptState = true;
         this.tokenType = tokenType;
     }
-    
+
+    public int getName() {
+        return name;
+    }
+   
     public void addNext(Alphabet alfabeto, State estado){
         nextStates.put(alfabeto.getId(), estado);
         nextAlphabet.add(alfabeto);
@@ -40,6 +49,27 @@ public class State {
     public State getNext(char alfabeto){
         return nextStates.get(alfabeto);        
     }
+    
+    public State getNext(char alfabeto, char chr){
+        State nextState = nextStates.get(alfabeto);
+        String state = "ERROR";        
+        if(nextState != null){
+            state = nextState.getName() + "";
+        }
+        String movement = "Me moví del estado " + this.getName() + " al estado " + state + " usando '" + chr + "'";
+        this.setActualMovement(movement);
+        return nextState;
+    }
+
+    public String getActualMovement() {
+        return actualMovement;
+    }
+
+    private void setActualMovement(String actualMovement) {
+        this.actualMovement = actualMovement;
+    }
+    
+    
     
     public boolean isAcceptState(){
         return this.acceptState;

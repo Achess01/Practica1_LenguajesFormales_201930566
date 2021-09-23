@@ -19,11 +19,11 @@ public class WordAutomaton implements Automatons{
     public WordAutomaton(String word){        
         words = new ArrayList<Token>();
         int len = word.length();
-        State aux;
-        State sf = new State(TokenType.PALABRA);
+        State aux;        
+        State sf = new State(TokenType.PALABRA, len);
         aux = sf;        
         for(int x = len - 1; x >= 0; x--){
-            State newState = new State();
+            State newState = new State(x);
             newState.addNext(word.charAt(x), aux);
             aux = newState;
         }

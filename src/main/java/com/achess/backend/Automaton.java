@@ -20,14 +20,14 @@ public class Automaton implements Automatons{
     private Automaton(){
         tokens = new ArrayList<Token>();
         errors = new ArrayList<Token>();        
-        s0 = new State();                
-        State s1 = new State(TokenType.IDENTIFICADOR);
-        State s2 = new State(TokenType.NUMERO);
-        State s3 = new State();
-        State s4 = new State(TokenType.DECIMAL);
-        State s5 = new State(TokenType.PUNTUACIÓN);
-        State s6 = new State(TokenType.OPERADOR);
-        State s7 = new State(TokenType.AGRUPACION);
+        s0 = new State(0);                
+        State s1 = new State(TokenType.IDENTIFICADOR, 1);
+        State s2 = new State(TokenType.NUMERO, 2);
+        State s3 = new State(3);
+        State s4 = new State(TokenType.DECIMAL, 4);
+        State s5 = new State(TokenType.PUNTUACIÓN, 5);
+        State s6 = new State(TokenType.OPERADOR, 6);
+        State s7 = new State(TokenType.AGRUPACION, 7);
         s5.setFinalState(true);
         s6.setFinalState(true);
         s7.setFinalState(true);
@@ -66,12 +66,16 @@ public class Automaton implements Automatons{
         return automaton;
     }       
     
-    private void addToken(TokenType tokenType, String lexeme, int row, int column, int index){        
-        tokens.add(new Token(tokenType, lexeme, row, column, index));
+    private void addToken(TokenType tokenType, String lexeme, int row, int column, int index, String movementes){        
+        Token tk = new Token(tokenType, lexeme, row, column, index);
+        tk.setMovements(movementes);
+        tokens.add(tk);
     }    
     
-    private void addToken(String lexeme, int row, int column, String description, int index){
-        errors.add(new Token(TokenType.ERROR, lexeme, row, column, description, index));
+    private void addToken(String lexeme, int row, int column, String description, int index, String movementes){
+        Token tk = new Token(TokenType.ERROR, lexeme, row, column, description, index);
+        tk.setMovements(movementes);
+        errors.add(tk);
     }
     
     public void analize(String text){
@@ -81,6 +85,7 @@ public class Automaton implements Automatons{
         int row = 1;
         int column = 1;
         String lexeme = "";
+        String movements = "";
         State aux1;
         State aux2;
         aux1 = s0;
@@ -89,38 +94,42 @@ public class Automaton implements Automatons{
             char chr = Alphabet.getAlpabhet(value);                
             if(chr == Alphabet.SEPARADOR.getId()){                                    
                 if(aux1.isAcceptState()){
-                    this.addToken(aux1.getTokenType(), lexeme, row, column,index);
+                    this.addToken(aux1.getTokenType(), lexeme, row, column,index, movements);
                 }
                 else if(aux1 != s0){
                     String des = aux1.nextValues();                    
-                    this.addToken(lexeme, row, column, des,index);
+                    this.addToken(lexeme, row, column, des,index, movements);
                 }
                 aux1 = s0;
                 lexeme = "";
+                movements = "";
                 if(value == '\n'){
                     row++;
                     column = 0;
                 }
             }
             else{
-                aux2 = aux1.getNext(chr);
+                aux2 = aux1.getNext(chr, value);
+                movements += aux1.getActualMovement() + '\n';
                 lexeme += value;
                 if(aux2 == null){
                     String des = aux1.nextValues();                                                                 
-                    this.addToken(lexeme, row, column+1, des,index+1);
+                    this.addToken(lexeme, row, column+1, des,index+1, movements);
                     aux1 = s0;
                     lexeme = "";
+                    movements = "";
                 }
                 else if (index == text.length() - 1 || aux2.isFinalState()){
                     if(aux2.isAcceptState()){
-                        this.addToken(aux2.getTokenType(), lexeme, row, column+1,index+1);
+                        this.addToken(aux2.getTokenType(), lexeme, row, column+1,index+1, movements);
                     }
                     else{
                         String des = aux2.nextValues();                        
-                        this.addToken(lexeme, row, column+1, des,index+1);
+                        this.addToken(lexeme, row, column+1, des,index+1, movements);
                     }
                     aux1 = s0;
                     lexeme = "";
+                    movements = "";
                 }
                 else{
                     aux1 = aux2;

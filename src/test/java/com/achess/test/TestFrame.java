@@ -25,8 +25,10 @@ public class TestFrame extends javax.swing.JFrame {
     /**
      * Creates new form TestFrame
      */
-    public TestFrame() {
+    public TestFrame() {        
         initComponents();
+        //LineNumber nl = new LineNumber(textSpace);   
+        //jScrollPane1.setRowHeaderView(nl);
     }
 
     /**
@@ -123,14 +125,12 @@ public class TestFrame extends javax.swing.JFrame {
         Automaton.getAutomaton().analize(text);
         String response = "";
         for(Token tk : Automaton.getAutomaton().getTokens()){            
-            System.out.println(tk);
+            System.out.println(tk.getMovements());           
         }
         System.out.println("Errores-------------------------------");
         for(Token tk : Automaton.getAutomaton().getErrors()){
-            System.out.println(tk);            
-        }        
-        
-        System.out.println(response);
+            System.out.println(tk.getMovements());                        
+        }                        
     }//GEN-LAST:event_buttonAnalizeActionPerformed
 
     private void buttonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSearchActionPerformed

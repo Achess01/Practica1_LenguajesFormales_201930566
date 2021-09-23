@@ -17,6 +17,7 @@ public class Token {
     private String description;
     private int begin;
     private int end;
+    private String movements;
 
     public Token(TokenType type, String lexeme, int row, int column, int index) {
         this.type = type;
@@ -35,7 +36,15 @@ public class Token {
         this.description = description;
         this.calcBeginEnd(index);
     }
-    
+
+    public String getMovements() {
+        return movements;
+    }
+
+    public void setMovements(String movements) {
+        this.movements = movements;
+    }
+        
     private void calcBeginEnd(int index){
         this.begin = index - this.lexeme.length();
         this.end = index;
