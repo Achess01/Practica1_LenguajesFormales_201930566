@@ -12,14 +12,14 @@ public class LineNumber extends JPanel
         implements CaretListener, DocumentListener, PropertyChangeListener {
 
     // Mis atributos
-    private Color background = new Color(40, 44, 53);
-    private Color foreground = new Color(123, 125, 125);
+    private Color background = new Color(46, 41, 46);
+    private Color foreground = new Color(80, 77, 81);
     private Color actualForeground = new Color(255, 255, 255);
 
     public final static float LEFT = 0.0f;
     public final static float CENTER = 0.5f;
     public final static float RIGHT = 1.0f;
-    private final static Border OUTER = new MatteBorder(0, 0, 0, 2, Color.BLACK);
+    private final static Border OUTER = new MatteBorder(0, 0, 0, 0, Color.BLACK);
 
     private final static int HEIGHT = Integer.MAX_VALUE - 1000000;
 

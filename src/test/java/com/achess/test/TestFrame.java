@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
@@ -26,9 +27,14 @@ public class TestFrame extends javax.swing.JFrame {
      * Creates new form TestFrame
      */
     public TestFrame() {        
-        initComponents();
-        //LineNumber nl = new LineNumber(textSpace);   
-        //jScrollPane1.setRowHeaderView(nl);
+        initComponents();        
+        LineNumber nl = new LineNumber(textSpace);
+        jScrollPane1.setRowHeaderView(nl);
+        LineNumber n2 = new LineNumber(textFound);
+        jScrollPane2.setRowHeaderView(n2);
+        jScrollPane2.setVisible(false);
+        textFound.setEditable(false);
+        jButton1.setVisible(false);        
     }
 
     /**
@@ -40,28 +46,19 @@ public class TestFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        textSpace = new javax.swing.JTextArea();
         buttonAnalize = new javax.swing.JButton();
         textFWord = new javax.swing.JTextField();
         buttonSearch = new javax.swing.JButton();
         labelCords = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        textSpace = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        textFound = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        textSpace.setColumns(20);
-        textSpace.setRows(5);
-        textSpace.addCaretListener(new javax.swing.event.CaretListener() {
-            public void caretUpdate(javax.swing.event.CaretEvent evt) {
-                textSpaceCaretUpdate(evt);
-            }
-        });
-        textSpace.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                textSpaceFocusGained(evt);
-            }
-        });
-        jScrollPane1.setViewportView(textSpace);
+        setBackground(new java.awt.Color(80, 77, 81));
 
         buttonAnalize.setText("Analizar");
         buttonAnalize.addActionListener(new java.awt.event.ActionListener() {
@@ -79,41 +76,102 @@ public class TestFrame extends javax.swing.JFrame {
 
         labelCords.setText("Ln: 1 Col: 1");
 
+        jButton1.setBackground(new java.awt.Color(204, 0, 0));
+        jButton1.setText("X");
+        jButton1.setBorder(null);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        textSpace.setBackground(new java.awt.Color(46, 41, 46));
+        textSpace.setColumns(20);
+        textSpace.setFont(new java.awt.Font("Liberation Mono", 0, 14)); // NOI18N
+        textSpace.setForeground(new java.awt.Color(255, 255, 255));
+        textSpace.setRows(5);
+        textSpace.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                textSpaceCaretUpdate(evt);
+            }
+        });
+        textSpace.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                textSpaceFocusGained(evt);
+            }
+        });
+        jScrollPane1.setViewportView(textSpace);
+
+        textFound.setBackground(new java.awt.Color(46, 41, 46));
+        textFound.setColumns(20);
+        textFound.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
+        textFound.setRows(5);
+        jScrollPane2.setViewportView(textFound);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(textFWord, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
-                        .addGap(33, 33, 33)
+                        .addGap(58, 58, 58)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(labelCords)
+                            .addComponent(buttonSearch))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(buttonAnalize)
-                            .addComponent(buttonSearch)
-                            .addComponent(labelCords))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(textFWord, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(33, 33, 33)
+                                .addComponent(buttonAnalize)))))
                 .addGap(38, 38, 38))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(labelCords)
-                .addGap(57, 57, 57)
-                .addComponent(buttonAnalize)
-                .addGap(50, 50, 50)
-                .addComponent(textFWord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonSearch)
-                .addContainerGap(120, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(232, 232, 232)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelCords)
+                            .addComponent(buttonAnalize))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(textFWord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buttonSearch))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -134,22 +192,26 @@ public class TestFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonAnalizeActionPerformed
 
     private void buttonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSearchActionPerformed
-        // TODO add your handling code here:        
-        textSpace.getHighlighter().removeAllHighlights();
+        // TODO add your handling code here:       
+        jScrollPane2.setVisible(true);
+        jButton1.setVisible(true);
+        SwingUtilities.updateComponentTreeUI(this);
+        textFound.getHighlighter().removeAllHighlights();
         Highlighter hilit;
         Highlighter.HighlightPainter painter;
         hilit = new DefaultHighlighter();        
         painter = new DefaultHighlighter.DefaultHighlightPainter(Color.CYAN);
-        textSpace.setHighlighter(hilit);
+        textFound.setHighlighter(hilit);
         String text = textSpace.getText();
         String word = textFWord.getText();
+        textFound.setText(text);
         WordAutomaton autW = new WordAutomaton(word);
         autW.analize(text);
         System.out.println("---------------------");
         for(Token tk : autW.getWords()){
             try {            
                 hilit.addHighlight(tk.getBegin(),tk.getEnd() ,painter);
-                textSpace.setCaretPosition(tk.getEnd());
+                textFound.setCaretPosition(tk.getEnd());
             } catch (BadLocationException ex) {
                 ex.printStackTrace(System.out);
             }
@@ -175,6 +237,13 @@ public class TestFrame extends javax.swing.JFrame {
             ex.printStackTrace(System.out);
         }
     }//GEN-LAST:event_textSpaceCaretUpdate
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.jScrollPane2.setVisible(false);
+        this.jButton1.setVisible(false);
+        SwingUtilities.updateComponentTreeUI(this);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -214,9 +283,13 @@ public class TestFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAnalize;
     private javax.swing.JButton buttonSearch;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel labelCords;
     private javax.swing.JTextField textFWord;
+    private javax.swing.JTextArea textFound;
     private javax.swing.JTextArea textSpace;
     // End of variables declaration//GEN-END:variables
 }
