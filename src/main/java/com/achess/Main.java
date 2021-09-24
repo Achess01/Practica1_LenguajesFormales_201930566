@@ -5,13 +5,18 @@
  */
 package com.achess;
 
+import com.achess.UI.MainForm;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 /**
  *
  * @author achess
  */
 public class Main {
-    public static void main(String[] args) {                
-        System.out.println("Listo");
+    public static void main(String[] args) {
+       
+        MainForm nf = new MainForm(); //Create and show the GUI.
+        nf.setVisible(true);
     }
-    //Agregar funcion para moverse al estado 0 y agregar estados de finalización
 }
