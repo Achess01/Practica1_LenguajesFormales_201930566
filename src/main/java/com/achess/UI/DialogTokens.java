@@ -9,6 +9,7 @@ import com.achess.backend.Automaton;
 import com.achess.backend.Token;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -28,8 +29,13 @@ public class DialogTokens extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.tokens = tokens;
-        showTokens();        
-        showMovements();
+        showTokens();                
+    }
+    
+    private void hideMovements(){
+        this.jScrollPane2.setVisible(false);
+        this.jScrollPane1.setVisible(true);
+        SwingUtilities.updateComponentTreeUI(this);
     }
     
     private void showTokens(){
@@ -45,6 +51,7 @@ public class DialogTokens extends javax.swing.JDialog {
                 modelTokens.addRow(data);
             }            
         }
+        hideMovements();
         this.jTable1.setModel(modelTokens);
     }
     
@@ -80,6 +87,7 @@ public class DialogTokens extends javax.swing.JDialog {
                 modelCountTokens.addRow(data);
             }
         }
+        hideMovements();
         this.jTable1.setModel(modelCountTokens);
     }
     private void showMovements(){                
@@ -89,7 +97,10 @@ public class DialogTokens extends javax.swing.JDialog {
                 this.movements += tk.getDescription() + " - " + tk.getLexeme() + "\n" + tk.getMovements() + "\n";
             }
             this.textMovements.setText(this.movements);
-        }          
+        }
+        this.jScrollPane2.setVisible(true);
+        this.jScrollPane1.setVisible(false);
+        SwingUtilities.updateComponentTreeUI(this);
     }
     private class CountToken{
         protected String type;
@@ -130,6 +141,7 @@ public class DialogTokens extends javax.swing.JDialog {
         textMovements = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        showMovements = new javax.swing.JButton();
 
         buttonCountLexemes1.setBackground(new java.awt.Color(46, 41, 46));
         buttonCountLexemes1.setForeground(new java.awt.Color(207, 191, 78));
@@ -192,44 +204,55 @@ public class DialogTokens extends javax.swing.JDialog {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                .addComponent(jScrollPane2)
                 .addContainerGap())
         );
+
+        showMovements.setBackground(new java.awt.Color(46, 41, 46));
+        showMovements.setForeground(new java.awt.Color(207, 191, 78));
+        showMovements.setText("Movimientos");
+        showMovements.setBorder(null);
+        showMovements.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showMovementsActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(67, Short.MAX_VALUE)
+                .addGap(79, 79, 79)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(79, 79, 79))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(buttonTokens, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42)
-                        .addComponent(buttonCountLexemes, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(162, 162, 162))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonCountLexemes, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44)
+                        .addComponent(showMovements, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(79, 79, 79))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonTokens, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonCountLexemes, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(16, 16, 16))
+                    .addComponent(buttonCountLexemes, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showMovements, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -246,6 +269,11 @@ public class DialogTokens extends javax.swing.JDialog {
         // TODO add your handling code here:
         showTokens();
     }//GEN-LAST:event_buttonTokensActionPerformed
+
+    private void showMovementsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showMovementsActionPerformed
+        // TODO add your handling code here:
+        showMovements();        
+    }//GEN-LAST:event_showMovementsActionPerformed
         
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCountLexemes;
@@ -256,6 +284,7 @@ public class DialogTokens extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton showMovements;
     private javax.swing.JTextArea textMovements;
     // End of variables declaration//GEN-END:variables
 }

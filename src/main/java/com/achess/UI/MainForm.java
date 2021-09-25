@@ -38,25 +38,17 @@ public class MainForm extends javax.swing.JFrame {
         jScrollPane2.setRowHeaderView(line2);    
         jScrollPane1.requestFocusInWindow();
     }
-    
-    private void lookAndFeel(){
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Metal".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogErrors.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogErrors.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogErrors.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DialogErrors.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+    private void showTextFound(){
+        this.jScrollPane2.setVisible(true);
+        this.buttonCloseTextFound.setVisible(true);
+        SwingUtilities.updateComponentTreeUI(this);
     }
+    
+    private void hideTextFound(){
+        this.jScrollPane2.setVisible(false);
+        this.buttonCloseTextFound.setVisible(false);
+        SwingUtilities.updateComponentTreeUI(this);
+    }   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -277,9 +269,7 @@ public class MainForm extends javax.swing.JFrame {
 
     private void buttonCloseTextFoundActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCloseTextFoundActionPerformed
        
-        this.jScrollPane2.setVisible(false);
-        this.buttonCloseTextFound.setVisible(false);
-        SwingUtilities.updateComponentTreeUI(this);
+        hideTextFound();
     }//GEN-LAST:event_buttonCloseTextFoundActionPerformed
 
     private void buttonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSearchActionPerformed
@@ -290,9 +280,7 @@ public class MainForm extends javax.swing.JFrame {
         autW.analize(text);
         ArrayList<Token> foundedWords = autW.getWords();        
         if(foundedWords.size()>0){
-            jScrollPane2.setVisible(true);
-            buttonCloseTextFound.setVisible(true);
-            SwingUtilities.updateComponentTreeUI(this);
+            showTextFound();
             textFound.getHighlighter().removeAllHighlights();
             Highlighter hilit;
             Highlighter.HighlightPainter painter;
@@ -317,15 +305,19 @@ public class MainForm extends javax.swing.JFrame {
     
     private void buttonAnalizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAnalizeActionPerformed
         // TODO add your handling code here:  
-        lookAndFeel();
+        hideTextFound();        
         String text = textEditor.getText();
         if (text.length() > 0){
            Automaton.getAutomaton().analize(text);
            ArrayList<Token> errors = Automaton.getAutomaton().getErrors();
-           if(errors.size() > 0){               
-               JDialog dialog = new DialogErrors(this, true, errors);
-               dialog.setLocationRelativeTo(null);
-               dialog.setVisible(true);
+           if(errors.size() > 0){
+               String errorMessage = "";
+               for (Token tk: errors){
+                   String pos = "Ln:" + tk.getRow() + " Col:" + tk.getColumn();
+                   errorMessage += "Error '"+ tk.getLexeme() + "'\ten " +pos+"\t" +tk.getDescription()+ "\n";
+               }               
+               this.textFound.setText(errorMessage);
+               showTextFound();
            }
            else{
                ArrayList<Token> tokens = Automaton.getAutomaton().getTokens();
