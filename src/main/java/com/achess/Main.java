@@ -16,7 +16,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class Main {
     public static void main(String[] args) {
        
-        MainForm nf = new MainForm(); //Create and show the GUI.
-        nf.setVisible(true);
+        //MainForm nf = new MainForm(); //Create and show the GUI.
+        //nf.setVisible(true);        
     }
 }

@@ -10,6 +10,7 @@ import com.achess.backend.Token;
 import com.achess.backend.WordAutomaton;
 import java.awt.Color;
 import java.util.ArrayList;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
@@ -63,6 +64,7 @@ public class MainForm extends javax.swing.JFrame {
         menuSave = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Analizador");
         setBackground(new java.awt.Color(46, 41, 46));
         setExtendedState(6);
 
@@ -114,16 +116,15 @@ public class MainForm extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(9, 9, 9)
-                    .addComponent(labelCords, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE))
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(3, 3, 3)
-                    .addComponent(buttonSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(1, 1, 1)
-                    .addComponent(textWordSearch)))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(9, 9, 9)
+                .addComponent(labelCords, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(3, 3, 3)
+                .addComponent(buttonSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(1, 1, 1)
+                .addComponent(textWordSearch))
             .addComponent(buttonAnalize, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -295,16 +296,22 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonSearchActionPerformed
 
     private void buttonAnalizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAnalizeActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:        
         String text = textEditor.getText();
-        Automaton.getAutomaton().analize(text);        
-        for(Token tk : Automaton.getAutomaton().getTokens()){            
-            System.out.println(tk);           
-        }
-        System.out.println("Errores-------------------------------");
-        for(Token tk : Automaton.getAutomaton().getErrors()){
-            System.out.println(tk);                        
-        }  
+        if (text.length() > 0){
+           Automaton.getAutomaton().analize(text);
+           ArrayList<Token> errors = Automaton.getAutomaton().getErrors();
+           if(errors.size() > 0){
+               //No mostrar tokens
+               JOptionPane.showMessageDialog(null, "Hay errores");
+           }
+           else{
+               ArrayList<Token> tokens = Automaton.getAutomaton().getTokens();
+               JDialog dialog = new DialogTokens(this, true, tokens);
+               dialog.setLocationRelativeTo(null);
+               dialog.setVisible(true);
+           }        
+        }        
     }//GEN-LAST:event_buttonAnalizeActionPerformed
 
     /**

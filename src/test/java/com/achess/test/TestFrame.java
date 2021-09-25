@@ -5,14 +5,20 @@
  */
 package com.achess.test;
 
+import com.achess.UI.LineNumber;
 import com.achess.backend.Automaton;
 import com.achess.backend.Token;
 import com.achess.backend.WordAutomaton;
 import java.awt.Color;
+import java.awt.Component;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
@@ -34,8 +40,28 @@ public class TestFrame extends javax.swing.JFrame {
         jScrollPane2.setRowHeaderView(n2);
         jScrollPane2.setVisible(false);
         textFound.setEditable(false);
-        jButton1.setVisible(false);        
+        jButton1.setVisible(false);    
+        addTable();
     }
+    
+    private void addTable(){        
+    }
+    
+    private void updateRowHeights(JTable table)
+{
+    for (int row = 0; row < table.getRowCount(); row++)
+    {
+        int rowHeight = table.getRowHeight();
+
+        for (int column = 0; column < table.getColumnCount(); column++)
+        {
+            Component comp = table.prepareRenderer(table.getCellRenderer(row, column), row, column);
+            rowHeight = Math.max(rowHeight, comp.getPreferredSize().height);
+        }
+
+        table.setRowHeight(row, rowHeight);
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -50,12 +76,14 @@ public class TestFrame extends javax.swing.JFrame {
         textFWord = new javax.swing.JTextField();
         buttonSearch = new javax.swing.JButton();
         labelCords = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         textSpace = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         textFound = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(80, 77, 81));
@@ -75,15 +103,6 @@ public class TestFrame extends javax.swing.JFrame {
         });
 
         labelCords.setText("Ln: 1 Col: 1");
-
-        jButton1.setBackground(new java.awt.Color(204, 0, 0));
-        jButton1.setText("X");
-        jButton1.setBorder(null);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         textSpace.setBackground(new java.awt.Color(46, 41, 46));
         textSpace.setColumns(20);
@@ -108,6 +127,15 @@ public class TestFrame extends javax.swing.JFrame {
         textFound.setRows(5);
         jScrollPane2.setViewportView(textFound);
 
+        jButton1.setBackground(new java.awt.Color(204, 0, 0));
+        jButton1.setText("X");
+        jButton1.setBorder(null);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -115,19 +143,42 @@ public class TestFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
+
+        jTable1.setBackground(new java.awt.Color(46, 41, 46));
+        jTable1.setForeground(new java.awt.Color(255, 255, 255));
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jTable1.setGridColor(new java.awt.Color(41, 46, 41));
+        jTable1.setShowHorizontalLines(true);
+        jScrollPane3.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -138,40 +189,34 @@ public class TestFrame extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(58, 58, 58)
+                        .addGap(186, 186, 186)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(labelCords)
                             .addComponent(buttonSearch))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(textFWord, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(33, 33, 33)
-                                .addComponent(buttonAnalize)))))
-                .addGap(38, 38, 38))
+                            .addComponent(buttonAnalize)
+                            .addComponent(textFWord, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(14, 14, 14))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(232, 232, 232)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelCords)
-                            .addComponent(buttonAnalize))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(textFWord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(buttonSearch))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(labelCords)
+                    .addComponent(buttonAnalize))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(textFWord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonSearch))
+                .addGap(29, 29, 29)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGap(26, 26, 26))
         );
 
         pack();
@@ -181,14 +226,27 @@ public class TestFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         String text = textSpace.getText();
         Automaton.getAutomaton().analize(text);
-        String response = "";
-        for(Token tk : Automaton.getAutomaton().getTokens()){            
-            System.out.println(tk.getMovements());           
+        DefaultTableModel model = new DefaultTableModel();              
+        model.addColumn("Nombre");        
+        model.addColumn("Lexeme");
+        model.addColumn("Posición");          
+        model.addColumn("Movimientos");
+        this.jTable1.setModel(model);        
+        this.jTable1.setEnabled(false);        
+        for(Token tk : Automaton.getAutomaton().getTokens()){                        
+            String cords = "Fila: "+ tk.getRow() + " Columna: " + tk.getColumn();
+            Object[] data = {tk.getType().getType(), tk.getLexeme(), cords, tk.getMovements()};
+            System.out.println(tk.getMovements());
+            model.addRow(data);
         }
         System.out.println("Errores-------------------------------");
         for(Token tk : Automaton.getAutomaton().getErrors()){
             System.out.println(tk.getMovements());                        
-        }                        
+        }
+        this.updateRowHeights(this.jTable1);
+        //JDialog dia = new NewJDialog(this, true);
+        //dia.setLocationRelativeTo(null);
+        //dia.setVisible(true);        
     }//GEN-LAST:event_buttonAnalizeActionPerformed
 
     private void buttonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSearchActionPerformed
@@ -287,6 +345,8 @@ public class TestFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel labelCords;
     private javax.swing.JTextField textFWord;
     private javax.swing.JTextArea textFound;
