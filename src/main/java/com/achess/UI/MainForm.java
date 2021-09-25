@@ -38,6 +38,25 @@ public class MainForm extends javax.swing.JFrame {
         jScrollPane2.setRowHeaderView(line2);    
         jScrollPane1.requestFocusInWindow();
     }
+    
+    private void lookAndFeel(){
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Metal".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(DialogErrors.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(DialogErrors.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(DialogErrors.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(DialogErrors.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -278,7 +297,8 @@ public class MainForm extends javax.swing.JFrame {
             Highlighter hilit;
             Highlighter.HighlightPainter painter;
             hilit = new DefaultHighlighter();        
-            painter = new DefaultHighlighter.DefaultHighlightPainter(Color.CYAN);
+            Color color = new Color(100, 100, 100);
+            painter = new DefaultHighlighter.DefaultHighlightPainter(color);
             textFound.setHighlighter(hilit);        
             textFound.setText(text);                        
             for(Token tk : foundedWords){
@@ -294,16 +314,18 @@ public class MainForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Ninguna coincidencia encontrada", "No encontrado", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_buttonSearchActionPerformed
-
+    
     private void buttonAnalizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAnalizeActionPerformed
-        // TODO add your handling code here:        
+        // TODO add your handling code here:  
+        lookAndFeel();
         String text = textEditor.getText();
         if (text.length() > 0){
            Automaton.getAutomaton().analize(text);
            ArrayList<Token> errors = Automaton.getAutomaton().getErrors();
-           if(errors.size() > 0){
-               //No mostrar tokens
-               JOptionPane.showMessageDialog(null, "Hay errores");
+           if(errors.size() > 0){               
+               JDialog dialog = new DialogErrors(this, true, errors);
+               dialog.setLocationRelativeTo(null);
+               dialog.setVisible(true);
            }
            else{
                ArrayList<Token> tokens = Automaton.getAutomaton().getTokens();
@@ -341,7 +363,7 @@ public class MainForm extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the form */        
         java.awt.EventQueue.invokeLater(new Runnable(){
             public void run() {
                 new MainForm().setVisible(true);
