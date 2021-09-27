@@ -151,7 +151,7 @@ public class MainForm extends javax.swing.JFrame {
         menuSave = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Analizador");
+        setTitle("ALEXEME");
         setBackground(new java.awt.Color(46, 41, 46));
         setExtendedState(6);
 

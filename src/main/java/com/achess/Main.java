@@ -6,12 +6,12 @@
 package com.achess;
 
 import com.achess.UI.MainForm;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+
 
 /**
  *
  * @author achess
+ * ALEXEME
  */
 public class Main {
     public static void main(String args[]) {        
