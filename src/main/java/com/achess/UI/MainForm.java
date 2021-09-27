@@ -9,11 +9,22 @@ import com.achess.backend.Automaton;
 import com.achess.backend.Token;
 import com.achess.backend.WordAutomaton;
 import java.awt.Color;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
@@ -48,7 +59,72 @@ public class MainForm extends javax.swing.JFrame {
         this.jScrollPane2.setVisible(false);
         this.buttonCloseTextFound.setVisible(false);
         SwingUtilities.updateComponentTreeUI(this);
-    }   
+    }
+    private void saveFile(){        
+        String text = this.textEditor.getText();
+            if(text.length() > 0){           
+            JFileChooser save = new JFileChooser();                        
+            save.showSaveDialog(null);
+            FileWriter fw = null;
+            save.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);            
+            try{
+                File file = save.getSelectedFile();
+                if(!file.exists()){
+                    PrintWriter pw = new PrintWriter(file.getPath() + ".txt");
+                    pw.print(text); 
+                    pw.close();
+                }
+                else{
+                    System.out.println("No se puede");
+                }
+            }catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Error al guardar, ponga nombre al archivo");
+            }
+            finally{
+                try{
+                    if(fw!=null){
+                    fw.close();
+                    }
+                }catch(Exception ex){
+                    ex.printStackTrace(System.out);
+                }                
+            }            
+        }        
+    }
+    
+    private void openFile(){
+        JFileChooser upload = new JFileChooser();
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("txt","txt");
+        upload.setFileFilter(filtro);
+        upload.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        upload.showOpenDialog(null);        
+        FileReader fr = null;
+        try{
+            File file = upload.getSelectedFile();
+            fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            
+            String text = "";
+            String line;                     
+            while((line = br.readLine()) != null){                
+                text += line + "\n";
+            }            
+            this.textEditor.setText(text);
+        }
+        catch (Exception ex){
+            JOptionPane.showMessageDialog(null, "Error al cargar el archivo");     
+        }
+        finally{
+                try{
+                    if(fr!=null){
+                    fr.close();
+                    }
+                }catch(Exception ex){
+                    ex.printStackTrace(System.out);
+                }                
+            }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -224,6 +300,11 @@ public class MainForm extends javax.swing.JFrame {
 
         menuSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         menuSave.setText("Guardar");
+        menuSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuSaveActionPerformed(evt);
+            }
+        });
         menuFile.add(menuSave);
 
         jMenuBar1.add(menuFile);
@@ -250,6 +331,8 @@ public class MainForm extends javax.swing.JFrame {
 
     private void menuOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOpenActionPerformed
         // TODO add your handling code here:
+        openFile();
+        
     }//GEN-LAST:event_menuOpenActionPerformed
 
     private void textEditorCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_textEditorCaretUpdate
@@ -327,6 +410,11 @@ public class MainForm extends javax.swing.JFrame {
            }        
         }        
     }//GEN-LAST:event_buttonAnalizeActionPerformed
+
+    private void menuSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSaveActionPerformed
+        // TODO add your handling code here:
+        saveFile();
+    }//GEN-LAST:event_menuSaveActionPerformed
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAnalize;
