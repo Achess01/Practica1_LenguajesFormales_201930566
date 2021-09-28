@@ -75,7 +75,7 @@ public class MainForm extends javax.swing.JFrame {
                     pw.close();
                 }
                 else{
-                    System.out.println("No se puede");
+                    JOptionPane.showConfirmDialog(null, "El archivo ya existe");
                 }
             }catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Error al guardar, ponga nombre al archivo");

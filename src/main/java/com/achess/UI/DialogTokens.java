@@ -46,8 +46,7 @@ public class DialogTokens extends javax.swing.JDialog {
             modelTokens.addColumn("Posición");                              
             for(Token tk : this.tokens){                        
                 String cords = "Fila: "+ tk.getRow() + " Columna: " + tk.getColumn();
-                Object[] data = {tk.getType().getType(), tk.getLexeme(), cords};
-                System.out.println(tk.getMovements());
+                Object[] data = {tk.getType().getType(), tk.getLexeme(), cords};                
                 modelTokens.addRow(data);
             }            
         }
@@ -65,8 +64,7 @@ public class DialogTokens extends javax.swing.JDialog {
                 if(count == null){                    
                     count = new CountToken(tk.getType().getType(), tk.getLexeme());
                     count.add();
-                    this.counts.put(count.lexeme, count);
-                    System.out.println(count.lexeme);
+                    this.counts.put(count.lexeme, count);                    
                 }
                 else{
                     count.add();
